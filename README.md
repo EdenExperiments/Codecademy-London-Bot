@@ -5,7 +5,7 @@ This bot, managed by myself is a community project within the Codecademy London 
 in a project outside of courses. I have used my experience on the Gyoshin Raid Planner bot to lead this, set up the bot, assign
 and assist with features, and provide help. 
 
-###This bot is only for use inside Codecademy London Chapter, but functionality will include:
+### This bot is only for use inside Codecademy London Chapter, but functionality will include:
 
 - Welcome message to provide information of the chapter.
 - Allow members of the server to play games against the bot.
@@ -17,4 +17,4 @@ and assist with features, and provide help.
 - Maintain a lo-fi music channel to study in with other members. 
 - Misc april fools gags / easter eggs.
 
-###Contributors:
+### Contributors:

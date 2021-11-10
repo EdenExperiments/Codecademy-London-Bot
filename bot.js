@@ -1,3 +1,5 @@
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const token = process.env['token']
@@ -9,25 +11,49 @@ const { hello }  = require('./commands/message/hello');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],});
 
 //Creates a list of all file names in commands/slash
+commands  = [];
 client.commands = new Collection();
 const slashCommandFiles = fs.readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
 
-//edits string of each file name to the name set to the slash command in file
+//edits string of each file name to the name set to the slash command in file (used in slash command handler).
 for (const file of slashCommandFiles) {
   const command = require(`./commands/slash/${file}`);
   client.commands.set(command.data.name, command);
 }
+
+//creates json list with information of each slash command (used for updating slash command info in guild)
+for (const file of slashCommandFiles) {
+	const command = require(`./commands/slash/${file}`);
+	commands.push(command.data.toJSON());
+}
+
+//Code to update slash commands for client_id (bot) in server (guild_id)
+const rest = new REST({ version: '9' }).setToken(token);
+
+(async () => {
+  try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(
+      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+      { body: commands },
+    );
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+})();
 
 //Console log to show client is ready when it logs on. 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-
-//incteractionCreate will cause an interraction when slash commands are used, add commands here if reacting to slash commands.
+//incteractionCreate will cause an interraction when slash commands are used
 client.on('interactionCreate', async interaction => {
 
-  //does nothing if no command with interaction
+  //returns nothing if no command with interaction
   if (!interaction.isCommand()) return;
 
   //fetches the command in the collection with slash command used
@@ -62,6 +88,5 @@ client.on('guildMemberAdd', async member => {
   console.log("Someone has joined the guild");
 });
 
-
-//bot logs on here if code is ran without any errors.
+//bot logs onto discord here if code is ran without any errors.
 client.login(token);

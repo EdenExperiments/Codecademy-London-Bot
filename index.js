@@ -8,10 +8,7 @@ const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
 const client = new Discord.Client({intents: [Intents.FLAGS.GUILDS]});
 
-const commands = [{
-  name: 'ping',
-  description: 'Replies with Pong!'
-}]; 
+const commands = [ ]; 
 
 const rest = new REST({ version: '9' }).setToken(token);
 
@@ -30,10 +27,6 @@ const rest = new REST({ version: '9' }).setToken(token);
   }
 })();
 
-client.on("message", msg => {
-  if (msg.content === "ping") {
-    msg.reply("pong")
-  }
-});
+
 
 

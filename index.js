@@ -1,3 +1,4 @@
+//DO NOT edit and run this file. This was used to initialise some packages. 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const token = process.env['token'];

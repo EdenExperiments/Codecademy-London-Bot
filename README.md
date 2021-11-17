@@ -21,7 +21,3 @@ and assist with features, and provide help.
 
 #### Paulyna Magana: https://github.com/paulynamagana
 Commands: Jokes slash command. Ecouragement message command + required Bot.JS edits.
-
-
-
-### add github/social links for contributors below 

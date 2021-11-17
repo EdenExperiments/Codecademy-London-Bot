@@ -18,3 +18,6 @@ and assist with features, and provide help.
 - Misc april fools gags / easter eggs.
 
 ### Contributors:
+
+#### Paulyna Magana: https://github.com/paulynamagana
+Commands: Jokes slash command. Ecouragement message command + required Bot.JS edits.

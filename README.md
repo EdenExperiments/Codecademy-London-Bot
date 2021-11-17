@@ -19,9 +19,9 @@ and assist with features, and provide help.
 
 ### Contributors:
 
-#### Myself / Eden Experiments:
-Main bot files, packages, environment set up.
-Assisting new programmers in coding in the environment and helping when required with commands.
-commands - mentalhealthhelp, optionscheck, music section of bot.
+#### Paulyna Magana: https://github.com/paulynamagana
+Commands: Jokes slash command. Ecouragement message command + required Bot.JS edits.
+
+
 
 ### add github/social links for contributors below 

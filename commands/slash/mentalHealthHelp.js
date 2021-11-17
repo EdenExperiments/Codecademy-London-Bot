@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('mentalhealthhelp')
-		.setDescription('Replies privately with a list of mental health help resources for the UK and other countries.'), 
+		.setDescription('Replies privately with a list of mental health help resources for the UK.'), 
 	async execute(interaction) {
     await interaction.reply({content: 'Although I am a bot, I am glad you are seeking help. Only you can see this command, please view your DM for information in getting help.', ephemeral: true});
 

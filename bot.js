@@ -5,13 +5,13 @@ const { Client, Collection, Intents } = require('discord.js');
 const token = process.env['token']
 const GUILD_ID = process.env['guild_id'];
 const CLIENT_ID = process.env['client_id'];
-const { hello }  = require('./commands/message/hello');
+const { hello } = require('./commands/message/hello');
 
 // Creating a new client instance and setting bot permissions, do not edit bot permissions without approval, we must keep these to a minimum for security. 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS], });
 
 //Creates a list of all file names in commands/slash
-commands  = [];
+commands = [];
 client.commands = new Collection();
 const slashCommandFiles = fs.readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
 
@@ -23,8 +23,8 @@ for (const file of slashCommandFiles) {
 
 //creates json list with information of each slash command (used for updating slash command info in guild)
 for (const file of slashCommandFiles) {
-	const command = require(`./commands/slash/${file}`);
-	commands.push(command.data.toJSON());
+  const command = require(`./commands/slash/${file}`);
+  commands.push(command.data.toJSON());
 }
 
 //Code to update slash commands for client_id (bot) in server (guild_id)
@@ -51,7 +51,7 @@ client.once('ready', () => {
 });
 
 //incteractionCreate will cause an interraction when slash commands are used
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
 
   //returns nothing if no command with interaction
   if (!interaction.isCommand()) return;
@@ -62,12 +62,14 @@ client.on('interactionCreate', async interaction => {
   // returns if command is undefined, meaning the command did not exist in the collection
   if (!command) return;
 
+  const { commandName, options } = interaction;
+
   //run the execute method inside slash command object
   try {
-    await command.execute(interaction);
-  } catch(error) {
+    await command.execute(interaction, options);
+  } catch (error) {
     console.error(error);
-    await interaction.reply({content: 'There was an error while attempting to execute this command!', ephemeral: true});
+    await interaction.reply({ content: 'There was an error while attempting to execute this command!', ephemeral: true });
   }
 });
 

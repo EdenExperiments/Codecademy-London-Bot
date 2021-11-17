@@ -6,6 +6,7 @@ const token = process.env['token']
 const GUILD_ID = process.env['guild_id'];
 const CLIENT_ID = process.env['client_id'];
 const { hello } = require('./commands/message/hello');
+const { encouragement } = require('./commands/message/encouragement');
 
 // Creating a new client instance and setting bot permissions, do not edit bot permissions without approval, we must keep these to a minimum for security. 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS], });
@@ -75,12 +76,19 @@ client.on('interactionCreate', async (interaction) => {
 
 //messageCreate causes the bot to react whenever a message is posted in the server, add commands here if reacting to messages, you can specify channels if required. 
 client.on('messageCreate', async message => {
+  //sadwords
+  const sadWords = ["sad", "depressed","unhappy", "angry", "miserable", "stressed", "under the weather", "swamped"];
   //returns nothing if the message was sent by the bot.
   if (message.author.id === client.user.id) return;
 
   if (message.content === '!hello') {
     hello(message);
   };
+//encouragement
+  if (sadWords.some(word => message.content.includes(word))){
+    encouragement(message);
+  };
+
 });
 
 //guildMemberAdd causes the bot to register an event occuring when someone joins the server on discord, any commands in here will run when someone joins. Only welcome message code in here, do not edit this section below unless a feature gets approval. 
@@ -89,6 +97,7 @@ client.on('guildMemberAdd', async member => {
   member.send(`Welcome to the Codecademy London Chapter!`);
   console.log("Someone has joined the guild");
 });
+
 
 //bot logs onto discord here if code is ran without any errors.
 client.login(token);

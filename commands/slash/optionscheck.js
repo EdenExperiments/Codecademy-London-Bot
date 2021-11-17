@@ -10,9 +10,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('optionscheck') //setting name of slash command
 		.setDescription('testing options')
+
     .addStringOption(option => option.setName('choice1').setDescription('Your option 1').setRequired(true))
+
     .addStringOption(option => option.setName('choice2').setDescription('Second choice').setRequired(true))
+
     .addStringOption(option => option.setName('optionalchoice').setDescription('An optional choice with no .require()')),
+    
 	async execute(interaction, options) {
     const choice1 = options.getString('choice1');
     const choice2 = options.getString('choice2');

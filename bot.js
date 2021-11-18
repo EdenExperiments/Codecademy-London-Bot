@@ -77,7 +77,7 @@ client.on('interactionCreate', async (interaction) => {
 //messageCreate causes the bot to react whenever a message is posted in the server, add commands here if reacting to messages, you can specify channels if required. 
 client.on('messageCreate', async message => {
   //sadwords
-  const sadWords = ["sad", "depressed","unhappy", "angry", "miserable", "stressed", "under the weather", "swamped"];
+  const sadWords = ["sad", "depressed","unhappy", "angry", "miserable", "stressed", "under the weather", "swamped", "anxious", "exhausted"];
   //returns nothing if the message was sent by the bot.
   if (message.author.id === client.user.id) return;
 

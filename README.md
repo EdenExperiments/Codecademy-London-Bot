@@ -1,6 +1,8 @@
 # Codecademy-London-Bot
 Bot for codecademy london chapter
 
+[https://www.code-inspector.com/project/29771/score/svg]
+
 This bot, managed by myself is a community project within the Codecademy London Chapter, with the aim to give members experience
 in a project outside of courses. I have used my experience on the Gyoshin Raid Planner bot to lead this, set up the bot, assign
 and assist with features, and provide help. 

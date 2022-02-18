@@ -25,8 +25,14 @@ const rest = new REST({ version: '9' }).setToken(token);
   } catch (error) {
     console.error(error);
   }
-})();
+});
 
+/*client.on("event type", function(parameter){  --for creating event listeners
+    function code
+});
+*/
 
-
-
+client.on("GuildMemberAdd", function(member) {
+  /* add in code */ 
+  client.channels.cache.get(`904814161740038175`).send(`Welcome to the Discord channel for London chapter of Codecademy ${member.displayName}! You can introduce yourself in the introduction section, there's a general channel to talk all sorts code, and places to talk about goals or recieve feedback on projects :)`)
+}) /* change to message their DM, so i don't flood a channel with the same message*/ 

@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const token = process.env['token']
-const GUILD_ID = process.env['guild_id'];
-const CLIENT_ID = process.env['client_id'];
+const TOKEN = process.env.TOKEN
+const GUILD_ID = process.env.GUILD_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 const { hello } = require('./commands/message/hello');
 const { encouragement } = require('./commands/message/encouragement');
 
@@ -29,8 +30,8 @@ for (const file of slashCommandFiles) {
 }
 
 //Code to update slash commands for client_id (bot) in server (guild_id)
-const rest = new REST({ version: '9' }).setToken(token);
-
+const rest = new REST({ version: '9' }).setToken(TOKEN);
+ 
 (async () => {
   try {
     console.log('Started refreshing application (/) commands.');
@@ -100,4 +101,4 @@ client.on('guildMemberAdd', async member => {
 
 
 //bot logs onto discord here if code is ran without any errors.
-client.login(token);
+client.login(TOKEN);

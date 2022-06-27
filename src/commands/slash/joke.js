@@ -1,7 +1,6 @@
 // add this in all slash command files to use to build the slash command
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-
 //jokes
 const jokes=[
   "I'm thinking of reasons to go to Switzerland. The flag is a big plus.",
@@ -20,16 +19,15 @@ const jokes=[
 ];
 
 // set a random number and get a joke from the array
+const joke = new SlashCommandBuilder()
+  .setName('joke')
+  .setDescription('Returns a joke!');
 
-//exporting the slash command object it is set to equal
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('joke') // name of slash command
-		.setDescription('Returns a joke!'),
+const execute = async (client, interaction) => {
+  const randJoke = jokes[Math.floor(Math.random() * jokes.length)];
+  await interaction.followUp({ content: randJoke, ephemeral: true });
+}
 
-    //async function, this is where your code for the functionality of the feature will go.
-	async execute(interaction) {
-    const randJoke = jokes[Math.floor(Math.random() * jokes.length)];
-		await interaction.reply({ content: randJoke, ephemeral: true });
-	},
-};
+joke.execute = execute;
+
+module.exports = joke;

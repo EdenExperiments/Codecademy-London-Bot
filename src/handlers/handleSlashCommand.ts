@@ -3,6 +3,7 @@ import {
   CommandInteraction
 } from 'discord.js';
 import { DataSource } from 'typeorm';
+import handleError from './handleError';
 import type { SlashCommand } from '../types';
 
 export default async function handleSlashCommand(
@@ -20,10 +21,7 @@ export default async function handleSlashCommand(
   });
 
   if (!slashCommand) {
-    await interaction.followUp({
-      ephemeral: true,
-      content: "Invalid command"
-    });
+    await handleError(interaction, 'Invalid command');
     return;
   }
 
@@ -32,11 +30,9 @@ export default async function handleSlashCommand(
       throw new Error('Invalid execute function')
     }
     await slashCommand.execute(client, interaction, connection, options);
-  } catch (error) {
-    console.error(error);
-    await interaction.followUp({
-      ephemeral: true,
-      content: 'Error attempting to execute command', 
-    });
+  } catch (e) {
+    console.error(e);
+    await handleError(interaction, e.message);
+    return;
   }
 }

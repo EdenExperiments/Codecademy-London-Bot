@@ -9,6 +9,8 @@ import {
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { commands } from './commands/slash';
+import { DataSource } from 'typeorm';
+import { dataSource } from './dataSource';
 import handleSlashCommand from './handlers/handleSlashCommand';
 import handleMessageCreate from './handlers/handleMessageCreate';
 import type { SlashCommand } from './types';
@@ -27,15 +29,23 @@ const client = new Client({
   ]
 });
 
-// setup listeners
-interactionCreate(client, commands);
-messageCreate(client);
-guildMemberAdd(client);
-ready(client);
+dataSource.initialize()
+  .then(async (connection) => {
+    console.log("Data Source initialized")
 
-// register commands and authenticate client
-registerCommands(commands, CLIENT_ID, GUILD_ID, TOKEN);
-client.login(TOKEN);
+    // setup listeners
+    interactionCreate(client, connection, commands);
+    messageCreate(client);
+    guildMemberAdd(client);
+    ready(client);
+
+    // register commands and authenticate client
+    registerCommands(commands, CLIENT_ID, GUILD_ID, TOKEN);
+    client.login(TOKEN);
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err)
+  })
 
 function ready(client: Client): void {
   client.on("ready", async () => {
@@ -48,11 +58,12 @@ function ready(client: Client): void {
 
 function interactionCreate(
   client: Client,
+  connection: DataSource,
   commands: SlashCommand[]
 ): void {
   client.on("interactionCreate", async (interaction: Interaction) => {
     if (interaction.isCommand()) {
-      await handleSlashCommand(client, interaction, commands);
+      await handleSlashCommand(client, interaction, connection, commands);
     }
   });
 }

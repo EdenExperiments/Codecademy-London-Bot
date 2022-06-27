@@ -1,6 +1,7 @@
 import { ping } from "./ping";
 import joke from "./joke";
 import cointoss from "./cointoss";
+import { resources } from "./resources";
 import optionscheck from "./optionscheck";
 import mentalHealthHelp from "./mentalHealthHelp";
 import breakReminder from "./breakReminder";
@@ -18,5 +19,6 @@ const jscmds = [
 // ts exports
 export const commands: SlashCommand[] = [
   ping,
+  resources,
   ...jscmds
 ];

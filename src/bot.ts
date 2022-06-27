@@ -1,10 +1,16 @@
 require('dotenv').config();
+import { 
+  Client,
+  Intents,
+  Interaction,
+  Message,
+  GuildMember
+ } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import { Client, Intents, Interaction } from 'discord.js';
 import { commands } from './commands/slash';
-import { hello } from './commands/message/hello';
-import { encouragement } from './commands/message/encouragement';
+import handleSlashCommand from './handlers/handleSlashCommand';
+import handleMessageCreate from './handlers/handleMessageCreate';
 import type { SlashCommand } from './types';
 
 const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
@@ -21,74 +27,49 @@ const client = new Client({
   ]
 });
 
+// setup listeners
+interactionCreate(client, commands);
+messageCreate(client);
+guildMemberAdd(client);
+ready(client);
+
+// register commands and authenticate client
 registerCommands(commands, CLIENT_ID, GUILD_ID, TOKEN);
 client.login(TOKEN);
 
-//Console log to show client is ready when it logs on. 
-client.once('ready', () => {
-  if (client && client.user) {
-    console.log(`Logged in as ${client.user.tag}!`);
-  }
-});
-
-//incteractionCreate will cause an interraction when slash commands are used
-client.on('interactionCreate', async (interaction: Interaction) => {
-
-  //returns nothing if no command with interaction
-  if (!interaction.isCommand()) return;
-
-  await interaction.deferReply();
-
-  const { commandName, options } = interaction;
-  const slashCommand = commands.find((c) => {
-    return c.name === commandName;
-  });
-
-  if (!slashCommand) {
-    await interaction.followUp({
-      ephemeral: true,
-      content: "Invalid command"
-    });
-    return;
-  }
-
-  try {
-    if (!slashCommand.execute) {
-      throw new Error('Invalid execute command')
+function ready(client: Client): void {
+  client.on("ready", async () => {
+    if (!client || !client.user) {
+      return;
     }
-    await slashCommand.execute(client, interaction, options);
-  } catch (e) {
-    console.error(e);
-    await interaction.followUp({
-      ephemeral: true,
-      content: 'Error attempting to execute command', 
-    });
-  }
-});
+    console.log(`${client.user.tag} is online`);
+  });
+}
 
-//messageCreate causes the bot to react whenever a message is posted in the server, add commands here if reacting to messages, you can specify channels if required. 
-client.on('messageCreate', async message => {
-  //sadwords
-  const sadWords = ["sad", "depressed","unhappy", "angry", "miserable", "stressed", "under the weather", "swamped", "anxious", "exhausted"];
-  //returns nothing if the message was sent by the bot.
-  if (message.author.id === client?.user?.id) return;
+function interactionCreate(
+  client: Client,
+  commands: SlashCommand[]
+): void {
+  client.on("interactionCreate", async (interaction: Interaction) => {
+    if (interaction.isCommand()) {
+      await handleSlashCommand(client, interaction, commands);
+    }
+  });
+}
 
-  if (message.content === '!hello') {
-    hello(message);
-  };
-//encouragement
-  if (sadWords.some(word => message.content.includes(word))){
-    encouragement(message);
-  };
+function messageCreate(client: Client): void {
+  client.on('messageCreate', async (message: Message) => {
+    await handleMessageCreate(message, client);
+  });
+}
 
-});
-
-//guildMemberAdd causes the bot to register an event occuring when someone joins the server on discord, any commands in here will run when someone joins. Only welcome message code in here, do not edit this section below unless a feature gets approval. 
-client.on('guildMemberAdd', async member => {
-  //send messages to the user who joined. 
-  member.send(`Welcome to the Codecademy London Chapter!`);
-  console.log("Someone has joined the guild");
-});
+function guildMemberAdd(client: Client): void {
+  client.on('guildMemberAdd', async (member: GuildMember) => {
+    // send message to the user who joined. 
+    member.send(`Welcome to the Codecademy London Chapter!`);
+    console.log("Someone has joined the guild");
+  });
+}
 
 // Register slash commands and print a list of available guild commands
 async function registerCommands(

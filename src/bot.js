@@ -3,11 +3,13 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const TOKEN = process.env.TOKEN
-const GUILD_ID = process.env.GUILD_ID;
-const CLIENT_ID = process.env.CLIENT_ID;
 const { hello } = require('./commands/message/hello');
 const { encouragement } = require('./commands/message/encouragement');
+
+const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
+if (!TOKEN || !GUILD_ID || !CLIENT_ID) {
+  throw new Error('Invalid or missing environment variable');
+}
 
 // Creating a new client instance and setting bot permissions, do not edit bot permissions without approval, we must keep these to a minimum for security. 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS], });
@@ -15,7 +17,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 //Creates a list of all file names in commands/slash
 commands = [];
 client.commands = new Collection();
-const slashCommandFiles = fs.readdirSync('./commands/slash').filter(file => file.endsWith('.js'));
+const slashCommandFiles = fs.readdirSync('./src/commands/slash').filter(file => file.endsWith('.js'));
 
 //edits string of each file name to the name set to the slash command in file (used in slash command handler).
 for (const file of slashCommandFiles) {

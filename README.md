@@ -1,6 +1,9 @@
 # Codecademy-London-Bot
 Bot for codecademy london chapter
 
+## This has been moved and now under London Chapter Leaders
+
+
 [https://www.code-inspector.com/project/29771/score/svg]
 
 This bot, managed by myself alongside the two chapter leaders is a community project within the Codecademy London Chapter, with the aim to give members experience

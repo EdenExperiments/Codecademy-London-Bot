@@ -2,6 +2,7 @@
 Bot for codecademy london chapter
 
 ## This has been moved and now under London Chapter Leaders
+## but kept here to display the setup I completed
 
 
 [https://www.code-inspector.com/project/29771/score/svg]
